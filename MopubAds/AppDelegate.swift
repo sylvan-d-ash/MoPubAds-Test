@@ -28,6 +28,14 @@ enum AdType {
         }
     }
 
+    var sizeString: String {
+        switch self {
+        case .banner: return "320x50"
+        case .rectangle: return "300x250"
+        case .native: return "0x0"
+        }
+    }
+
     var description: String {
         switch self {
             case .banner: return "320x50 banner ad"
