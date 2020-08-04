@@ -52,6 +52,7 @@ private extension ViewController {
 
         adTypeLabel.text = adType.description
         adTypeLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(adTypeLabel)
         NSLayoutConstraint.activate([
             adTypeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             adTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
