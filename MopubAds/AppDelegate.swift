@@ -7,14 +7,43 @@
 //
 
 import UIKit
+import MoPub
+
+enum AdType {
+    case banner, rectangle, native
+
+    var adUnitId: String {
+        switch self {
+            case .banner: return "8c6814b7e08345e2a39ee522a774b2e5"
+            case .rectangle: return "d394eaf7019246778d7d03f991de16fd"
+            case .native: return "865119d3b09c4875b6d81da8c7873d4b"
+        }
+    }
+
+    var size: CGSize {
+        switch self {
+            case .banner: return CGSize(width: 320, height: 50)
+            case .rectangle: return CGSize(width: 300, height: 250)
+            case .native: return .zero
+        }
+    }
+
+    var description: String {
+        switch self {
+            case .banner: return "320x50 banner ad"
+            case .rectangle: return "300x250 medium rectangle ad"
+            case .native: return "native ad"
+        }
+    }
+}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+    static let adType: AdType = .banner
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+
         return true
     }
 
