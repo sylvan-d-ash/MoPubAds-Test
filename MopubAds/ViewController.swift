@@ -115,10 +115,11 @@ private extension ViewController {
 extension ViewController: GADBannerViewDelegate {
     public func adViewDidReceiveAd(_ bannerView: GADBannerView) {
         bannerView.isHidden = false
-        print("💚 Banner adapter class name: \(bannerView.responseInfo?.adNetworkClassName)")
+        loadStatusLabel.text = "Ad Status: Loaded"
     }
 
     public  func adView(_ bannerView: GADBannerView, didFailToReceiveAdWithError error: GADRequestError) {
         print("💚❌ error: \(error.localizedDescription)")
+        loadStatusLabel.text = "Ad Status: Failed"
     }
 }
