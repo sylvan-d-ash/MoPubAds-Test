@@ -43,6 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static let adType: AdType = .banner
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let mopubConfig = MPMoPubConfiguration(adUnitIdForAppInitialization: AppDelegate.adType.adUnitId)
+        mopubConfig.loggingLevel = .debug
+        MoPub.sharedInstance().initializeSdk(with: mopubConfig) {
+            print("💚 SDK initialization complete")
+        }
 
         return true
     }
