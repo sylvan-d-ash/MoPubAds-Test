@@ -48,7 +48,7 @@ enum AdType {
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    static let adType: AdType = .banner
+    static let adType: AdType = .native
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let mopubConfig = MPMoPubConfiguration(adUnitIdForAppInitialization: AppDelegate.adType.adUnitId)
