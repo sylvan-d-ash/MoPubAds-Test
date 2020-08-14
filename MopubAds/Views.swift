@@ -150,11 +150,17 @@ class DisplayAdContentView: UIView, ViewProtocol, HasController, GADBannerViewDe
         bannerView.load(request)
     }
 
+    private func unloadAd() {
+        guard let bannerView = bannerView else { return }
+        bannerView.removeFromSuperview()
+    }
+
     // MARK: ViewProtocol
 
     func load(content: DisplayAdContent) {
         adTypeLabel.text = content.type.description
         loadStatusLabel.text = "Status: Loading.."
+        unloadAd()
         loadDisplayAd(content: content)
     }
 
@@ -217,11 +223,18 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
     }
 
     private func loadNativeAd(content: NativeAdContent) {
+        unloadAd()
+
         nativeAdView = UnifiedNativeAdView()
         containerView.addSubview(nativeAdView)
         nativeAdView.fillParent()
 
         requestNativeAd(content: content)
+    }
+
+    private func unloadAd() {
+        guard let nativeAdView = nativeAdView else { return }
+        nativeAdView.removeFromSuperview()
     }
 
     private func requestNativeAd(content: NativeAdContent) {
@@ -289,6 +302,7 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
         //loadStatusLabel.text = "Status: Loading.."
         //loadNativeAd(content: content)
 
+        unloadAd()
         display(ad: content)
     }
 
