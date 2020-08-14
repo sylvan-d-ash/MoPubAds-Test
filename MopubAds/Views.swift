@@ -69,6 +69,11 @@ final class ContentViewCell<ViewType: UIView>: UICollectionViewCell, HasControll
         contentView.addSubview(displayContentView)
         displayContentView.fillParent()
     }
+
+    func loadData(_ data: ContentProtocol) {
+        guard let data = data as? ViewType.ContentType else { return }
+        displayContentView.load(content: data)
+    }
 }
 
 // MARK: -
