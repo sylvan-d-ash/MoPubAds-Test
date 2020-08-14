@@ -65,3 +65,14 @@ extension ShowAdsViewController: UICollectionViewDataSource {
 //        return cell
     }
 }
+
+extension ShowAdsViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let height: CGFloat = (Dimensions.labelHeight * 2) + (10 * 2) + AdType.rectangle.size.height
+        return CGSize(width: UIScreen.main.bounds.width, height: height)
+    }
+}

@@ -31,6 +31,10 @@ extension UIView {
     }
 }
 
+enum Dimensions {
+    static let labelHeight: CGFloat = 25
+}
+
 // MARK: -
 
 protocol ViewProtocol {
@@ -133,19 +137,17 @@ class DisplayAdContentView: UIView, ViewProtocol, HasController, GADBannerViewDe
     private func setupSubviews() {
         backgroundColor = .white
 
-        let labelHeight: CGFloat = 35
-
         adTypeLabel.textAlignment = .center
         addSubview(adTypeLabel)
         adTypeLabel.fillParentHorizontally()
         adTypeLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        adTypeLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+        adTypeLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
         loadStatusLabel.textAlignment = .center
         addSubview(loadStatusLabel)
         loadStatusLabel.fillParentHorizontally()
         loadStatusLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        loadStatusLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+        loadStatusLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
         containerView.backgroundColor = .green
         addSubview(containerView)
@@ -166,7 +168,6 @@ class DisplayAdContentView: UIView, ViewProtocol, HasController, GADBannerViewDe
         NSLayoutConstraint.activate([
             bannerView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             bannerView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 300),
         ])
 
         let request = DFPRequest()
@@ -223,19 +224,17 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
     private func setupSubviews() {
         backgroundColor = .white
 
-        let labelHeight: CGFloat = 35
-
         adTypeLabel.textAlignment = .center
         addSubview(adTypeLabel)
         adTypeLabel.fillParentHorizontally()
         adTypeLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        adTypeLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+        adTypeLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
         loadStatusLabel.textAlignment = .center
         addSubview(loadStatusLabel)
         loadStatusLabel.fillParentHorizontally()
         loadStatusLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        loadStatusLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+        loadStatusLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
         containerView.backgroundColor = .green
         addSubview(containerView)
