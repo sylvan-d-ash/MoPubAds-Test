@@ -38,10 +38,23 @@ protocol ViewProtocol {
     func load(content: ContentType)
 }
 
+protocol HasController: AnyObject {
+    // weak
+    var controller: UIViewController? { get set }
+}
+
 // MARK: -
 
-final class ContentViewCell<ViewType: UIView>: UICollectionViewCell where ViewType: ViewProtocol {
+final class ContentViewCell<ViewType: UIView>: UICollectionViewCell, HasController where ViewType: ViewProtocol {
     let displayContentView = ViewType()
+    weak var controller: UIViewController? {
+        get {
+            return (displayContentView as? HasController)?.controller
+        }
+        set {
+            (displayContentView as? HasController)?.controller = newValue
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -89,8 +102,9 @@ class NormalContentView: UIView, ViewProtocol {
 
 // MARK: -
 
-class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
+class DisplayAdContentView: UIView, ViewProtocol, HasController, GADBannerViewDelegate {
     typealias ContentType = DisplayAdContent
+    weak var controller: UIViewController?
 
     private let containerView = UIView()
     private let adTypeLabel = UILabel()
@@ -135,7 +149,7 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
         let size = GADAdSizeFromCGSize(content.type.size)
         bannerView = DFPBannerView(adSize: size)
         bannerView.adUnitID = AdParamsBuilder.adUnitId
-        //bannerView.rootViewController = self
+        bannerView.rootViewController = controller
         bannerView.delegate = self
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(bannerView)
@@ -177,8 +191,9 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
 
 // MARK: -
 
-class NativeAdContentView: UIView, ViewProtocol, GADNativeCustomTemplateAdLoaderDelegate {
+class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomTemplateAdLoaderDelegate {
     typealias ContentType = NativeAdContent
+    weak var controller: UIViewController?
 
     private let containerView = UIView()
     private let adTypeLabel = UILabel()
@@ -238,7 +253,7 @@ class NativeAdContentView: UIView, ViewProtocol, GADNativeCustomTemplateAdLoader
         videoOptions.clickToExpandRequested = false
 
         let adTypes: [GADAdLoaderAdType] = [.nativeCustomTemplate, .unifiedNative]
-        let adLoader = GADAdLoader(adUnitID: AdParamsBuilder.adUnitId, rootViewController: self, adTypes: adTypes, options: [imageLoaderOptions, mediaLoaderOptions, videoOptions])
+        let adLoader = GADAdLoader(adUnitID: AdParamsBuilder.adUnitId, rootViewController: controller, adTypes: adTypes, options: [imageLoaderOptions, mediaLoaderOptions, videoOptions])
         adLoader.delegate = self
 
         let params = AdParamsBuilder.params(for: content.type, position: content.position)
