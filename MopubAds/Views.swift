@@ -93,9 +93,10 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
     typealias ContentType = DisplayAdContent
 
     private let containerView = UIView()
-    private var bannerView: DFPBannerView!
     private let adTypeLabel = UILabel()
     private let loadStatusLabel = UILabel()
+
+    private var bannerView: DFPBannerView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -130,7 +131,7 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
         containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: 10).isActive = true
     }
 
-    private func setupAdView(content: DisplayAdContent) {
+    private func loadDisplayAd(content: DisplayAdContent) {
         let size = GADAdSizeFromCGSize(content.type.size)
         bannerView = DFPBannerView(adSize: size)
         bannerView.adUnitID = AdParamsBuilder.adUnitId
@@ -158,7 +159,7 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
     func load(content: DisplayAdContent) {
         adTypeLabel.text = content.type.description
         loadStatusLabel.text = "Status: Loading.."
-        setupAdView(content: content)
+        loadDisplayAd(content: content)
     }
 
     // MARK: GADBannerViewDelegate
@@ -176,8 +177,15 @@ class DisplayAdContentView: UIView, ViewProtocol, GADBannerViewDelegate {
 
 // MARK: -
 
-class NativeAdContentView: UIView, ViewProtocol {
+class NativeAdContentView: UIView, ViewProtocol, GADNativeCustomTemplateAdLoaderDelegate {
     typealias ContentType = NativeAdContent
+
+    private let containerView = UIView()
+    private let adTypeLabel = UILabel()
+    private let loadStatusLabel = UILabel()
+
+    private var nativeAdView: UnifiedNativeAdView!
+    private var adLoader: GADAdLoader?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -189,10 +197,101 @@ class NativeAdContentView: UIView, ViewProtocol {
     }
 
     private func setupSubviews() {
-        //
+        backgroundColor = .white
+
+        let labelHeight: CGFloat = 35
+
+        adTypeLabel.textAlignment = .center
+        addSubview(adTypeLabel)
+        adTypeLabel.fillParentHorizontally()
+        adTypeLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        adTypeLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+
+        loadStatusLabel.textAlignment = .center
+        addSubview(loadStatusLabel)
+        loadStatusLabel.fillParentHorizontally()
+        loadStatusLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        loadStatusLabel.heightAnchor.constraint(equalToConstant: labelHeight).isActive = true
+
+        containerView.backgroundColor = .green
+        addSubview(containerView)
+        containerView.fillParentHorizontally()
+        containerView.topAnchor.constraint(equalTo: adTypeLabel.bottomAnchor, constant: 10).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: 10).isActive = true
     }
 
+    private func loadNativeAd(content: NativeAdContent) {
+        nativeAdView = UnifiedNativeAdView()
+        containerView.addSubview(nativeAdView)
+        nativeAdView.fillParent()
+
+        requestNativeAd(content: content)
+    }
+
+    private func requestNativeAd(content: NativeAdContent) {
+        let imageLoaderOptions = GADNativeAdImageAdLoaderOptions()
+        imageLoaderOptions.disableImageLoading = false
+        let mediaLoaderOptions = GADNativeAdMediaAdLoaderOptions()
+        mediaLoaderOptions.mediaAspectRatio = .landscape
+        let videoOptions = GADVideoOptions()
+        videoOptions.customControlsRequested = true
+        videoOptions.clickToExpandRequested = false
+
+        let adTypes: [GADAdLoaderAdType] = [.nativeCustomTemplate, .unifiedNative]
+        let adLoader = GADAdLoader(adUnitID: AdParamsBuilder.adUnitId, rootViewController: self, adTypes: adTypes, options: [imageLoaderOptions, mediaLoaderOptions, videoOptions])
+        adLoader.delegate = self
+
+        let params = AdParamsBuilder.params(for: content.type, position: content.position)
+        let extras = GADExtras()
+        extras.additionalParameters = params as [AnyHashable: Any]
+        let request = DFPRequest()
+        request.register(extras)
+        self.adLoader = adLoader
+
+        adLoader.load(request)
+    }
+
+    // MARK: ViewProtocol
+
     func load(content: NativeAdContent) {
-        //
+        adTypeLabel.text = content.type.description
+        loadStatusLabel.text = "Status: Loading.."
+        loadNativeAd(content: content)
+    }
+
+    // MARK: GADNativeCustomTemplateAdLoaderDelegate
+
+    private enum NativeAdTemplateId: String {
+        case content = "10100197"
+        case appInstall = "10099357"
+        case video = "10100077"
+        case carousel = "11806947"
+    }
+
+    func nativeCustomTemplateIDs(for adLoader: GADAdLoader) -> [String] {
+        return [
+            NativeAdTemplateId.content.rawValue,
+            NativeAdTemplateId.appInstall.rawValue,
+            NativeAdTemplateId.video.rawValue,
+            NativeAdTemplateId.carousel.rawValue,
+        ]
+    }
+
+    func adLoader(_ adLoader: GADAdLoader, didReceive nativeCustomTemplateAd: GADNativeCustomTemplateAd) {
+        loadStatusLabel.text = "Status: Custom Native Ad Loaded!"
+    }
+
+    // MARK: GADUnifiedNativeAdLoaderDelegate
+
+    func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
+        loadStatusLabel.text = "Status: Unified Native Ad Loaded!"
+        nativeAdView.load(content: nativeAd)
+    }
+
+    // MARK: GADAdLoaderDelegate
+
+    func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
+        print("💚❌ error: \(error.localizedDescription)")
+        loadStatusLabel.text = "Status: \(error.localizedDescription)"
     }
 }

@@ -48,6 +48,12 @@ class DisplayAdContent: NSObject, ContentProtocol {
 
 class NativeAdContent: NSObject, ContentProtocol {
     let type: AdType = .native
+    let position: String
+
+    init(position: String) {
+        self.position = position
+        super.init()
+    }
 
     func reuseIdentifier() -> String {
         return ""
