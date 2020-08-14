@@ -12,6 +12,8 @@ protocol ContentProtocol: AnyObject {
     func reuseIdentifier() -> String
 }
 
+// MARK: -
+
 class NormalContent: NSObject, ContentProtocol {
     let title: String
 
@@ -24,6 +26,8 @@ class NormalContent: NSObject, ContentProtocol {
         return ""
     }
 }
+
+// MARK: -
 
 class DisplayAdContent: NSObject, ContentProtocol {
     let type: AdType
@@ -40,6 +44,8 @@ class DisplayAdContent: NSObject, ContentProtocol {
     }
 }
 
+// MARK: -
+
 class NativeAdContent: NSObject, ContentProtocol {
     let type: AdType = .native
 
@@ -47,6 +53,8 @@ class NativeAdContent: NSObject, ContentProtocol {
         return ""
     }
 }
+
+// MARK: -
 
 class AdParamsBuilder {
     private let adType = AppDelegate.adType
