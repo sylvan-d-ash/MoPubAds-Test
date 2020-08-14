@@ -57,9 +57,9 @@ class NativeAdContent: NSObject, ContentProtocol {
 // MARK: -
 
 class AdParamsBuilder {
-    private let adType = AppDelegate.adType
-    private let adUnitId = "/8663477/BR/Horse_Racing/main/mob/horse-racing"
-    private lazy var params: [String: Any] = {
+    static let adUnitId = "/8663477/BR/Horse_Racing/main/mob/horse-racing"
+
+    static func params(for type: AdType, position: String) -> [String: Any] {
         var dict: [String: Any] = [
             "tdcidx": "ckJzckJzckJuckJzcl9zckJzb0JzckJuckJzckJzckJzckJz",
             "locale": "en_US",
@@ -67,9 +67,9 @@ class AdParamsBuilder {
             "app": "true",
             "build": "8615",
             "sid": "1",
-            "pg": adType == .native ? "section" : "main",
-            "size": adType.sizeString,
-            "pos": adType == .native ? "nat_lar_01_mob" : "rect_atf_01_mob",
+            "pg": type == .native ? "section" : "main",
+            "size": type.sizeString,
+            "pos": type == .native ? "nat_lar_\(position)_mob" : "rect_atf_\(position)_mob",
             "tags": "horse_racing",
             "tag_id": "2474",
             "site": "Horse_Racing",
@@ -78,10 +78,10 @@ class AdParamsBuilder {
             "alert": "false",
         ]
 
-        if adType != .native {
+        if type != .native {
             dict["page"] = "main"
         }
 
         return dict
-    }()
+    }
 }
