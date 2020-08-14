@@ -23,7 +23,7 @@ class NormalContent: NSObject, ContentProtocol {
     }
 
     func reuseIdentifier() -> String {
-        return ""
+        return ContentViewCell<NormalContentView>.reuseIdentifier()
     }
 }
 
@@ -40,7 +40,7 @@ class DisplayAdContent: NSObject, ContentProtocol {
     }
 
     func reuseIdentifier() -> String {
-        return ""
+        return ContentViewCell<DisplayAdContentView>.reuseIdentifier()
     }
 }
 
@@ -56,7 +56,7 @@ class NativeAdContent: NSObject, ContentProtocol {
     }
 
     func reuseIdentifier() -> String {
-        return ""
+        return ContentViewCell<NativeAdContentView>.reuseIdentifier()
     }
 }
 

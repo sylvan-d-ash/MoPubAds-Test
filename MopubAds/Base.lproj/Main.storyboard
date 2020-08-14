@@ -10,7 +10,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="MopubAds" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ViewController" modalPresentationStyle="fullScreen" id="BYZ-38-t0r" customClass="ViewController" customModule="MopubAds" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -21,13 +21,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3139" y="94"/>
+            <point key="canvasLocation" x="3893" y="94"/>
         </scene>
-        <!--Item-->
+        <!--Main-->
         <scene sceneID="jyq-qt-t11">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cF9-y2-TWp" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Eg6-gT-vX7"/>
+                    <tabBarItem key="tabBarItem" title="Main" id="Eg6-gT-vX7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="v53-SD-ltG">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -48,6 +48,7 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="Flq-xq-MwK" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Uew-cG-SfS">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
@@ -71,7 +72,7 @@
                                 <rect key="frame" x="173" y="433" width="68" height="30"/>
                                 <state key="normal" title="Show Ads"/>
                                 <connections>
-                                    <segue destination="BYZ-38-t0r" kind="show" id="iep-uw-jBL"/>
+                                    <segue destination="aN0-o3-HuQ" kind="show" id="XfT-JT-Qb8"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -87,6 +88,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lz9-hJ-1kq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1897" y="94"/>
+        </scene>
+        <!--Show Ads View Controller-->
+        <scene sceneID="lDT-PG-Hdz">
+            <objects>
+                <viewController id="aN0-o3-HuQ" customClass="ShowAdsViewController" customModule="MopubAds" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7ne-3h-f1B">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="Uhn-AC-SNW"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="QXs-qD-6Ve"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zCT-TT-ez6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2939" y="94"/>
         </scene>
     </scenes>
 </document>

@@ -10,23 +10,28 @@ import UIKit
 
 class ShowAdsViewController: UIViewController {
     private var collectionView: UICollectionView!
-    private var content: [Any] = []
+    private var contents: [ContentProtocol] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSubviews()
+
+        DispatchQueue.main.async { [weak self] in
+            self?.loadData()
+        }
     }
 
     private func setupSubviews() {
         view.backgroundColor = .white
 
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
+        layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 10
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.dataSource = self
+        collectionView.delegate = self
         collectionView.showsHorizontalScrollIndicator = false
         view.addSubview(collectionView)
         registerCells(for: collectionView)
@@ -38,6 +43,27 @@ class ShowAdsViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+
+    private func loadData() {
+        contents = [
+            NormalContent(title: "First item"),
+            DisplayAdContent(type: .banner, position: "01"),
+
+            NormalContent(title: "First item"),
+            NormalContent(title: "First item"),
+            NativeAdContent(position: "01"),
+
+            NormalContent(title: "First item"),
+            NormalContent(title: "First item"),
+            DisplayAdContent(type: .rectangle, position: "02"),
+
+            NormalContent(title: "First item"),
+            NormalContent(title: "First item"),
+            NativeAdContent(position: "02"),
+            NormalContent(title: "First item"),
+        ]
+        collectionView.reloadData()
     }
 
     private func registerCells(for collectionView: UICollectionView) {
@@ -54,15 +80,24 @@ class ShowAdsViewController: UIViewController {
 
 extension ShowAdsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return content.count
+        return contents.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(ForecastCollectionCell.self)", for: indexPath) as? ForecastCollectionCell else {
-            return UICollectionViewCell()
-//        }
-//        cell.load(content: forecasts[indexPath.row])
-//        return cell
+        let content = contents[indexPath.row]
+        let _cell = collectionView.dequeueReusableCell(withReuseIdentifier: content.reuseIdentifier(), for: indexPath)
+        if type(of: content) == NormalContent.self, let cell = _cell as? ContentViewCell<NormalContentView> {
+            cell.controller = self
+            cell.loadData(content)
+        } else if type(of: content) == DisplayAdContent.self, let cell = _cell as? ContentViewCell<DisplayAdContentView> {
+            cell.controller = self
+            cell.loadData(content)
+        } else if type(of: content) == NativeAdContent.self, let cell = _cell as? ContentViewCell<NativeAdContentView> {
+            cell.controller = self
+            cell.loadData(content)
+        }
+
+        return _cell
     }
 }
 

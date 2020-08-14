@@ -9,34 +9,6 @@
 import GoogleMobileAds
 import UIKit
 
-extension UIView {
-    func fillParent() {
-        guard let superview = superview else { return }
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: superview.leadingAnchor),
-            trailingAnchor.constraint(equalTo: superview.trailingAnchor),
-            topAnchor.constraint(equalTo: superview.topAnchor),
-            bottomAnchor.constraint(equalTo: superview.bottomAnchor),
-        ])
-    }
-
-    func fillParentHorizontally() {
-        guard let superview = superview else { return }
-        translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: superview.leadingAnchor),
-            trailingAnchor.constraint(equalTo: superview.trailingAnchor),
-        ])
-    }
-}
-
-enum Dimensions {
-    static let labelHeight: CGFloat = 25
-}
-
-// MARK: -
-
 protocol ViewProtocol {
     associatedtype ContentType: ContentProtocol
     func load(content: ContentType)
@@ -101,7 +73,7 @@ class NormalContentView: UIView, ViewProtocol {
     }
 
     private func setupSubviews() {
-        backgroundColor = .white
+        backgroundColor = .systemIndigo
 
         titleLabel.textAlignment = .center
         addSubview(titleLabel)
@@ -149,11 +121,11 @@ class DisplayAdContentView: UIView, ViewProtocol, HasController, GADBannerViewDe
         loadStatusLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         loadStatusLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
-        containerView.backgroundColor = .green
+        containerView.backgroundColor = .systemGreen
         addSubview(containerView)
         containerView.fillParentHorizontally()
         containerView.topAnchor.constraint(equalTo: adTypeLabel.bottomAnchor, constant: 10).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: 10).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: -10).isActive = true
     }
 
     private func loadDisplayAd(content: DisplayAdContent) {
@@ -236,11 +208,11 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
         loadStatusLabel.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         loadStatusLabel.heightAnchor.constraint(equalToConstant: Dimensions.labelHeight).isActive = true
 
-        containerView.backgroundColor = .green
+        containerView.backgroundColor = .systemTeal
         addSubview(containerView)
         containerView.fillParentHorizontally()
         containerView.topAnchor.constraint(equalTo: adTypeLabel.bottomAnchor, constant: 10).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: 10).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: loadStatusLabel.topAnchor, constant: -10).isActive = true
     }
 
     private func loadNativeAd(content: NativeAdContent) {
@@ -317,4 +289,32 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
         print("💚❌ error: \(error.localizedDescription)")
         loadStatusLabel.text = "Status: \(error.localizedDescription)"
     }
+}
+
+// MARK: -
+
+extension UIView {
+    func fillParent() {
+        guard let superview = superview else { return }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+            topAnchor.constraint(equalTo: superview.topAnchor),
+            bottomAnchor.constraint(equalTo: superview.bottomAnchor),
+        ])
+    }
+
+    func fillParentHorizontally() {
+        guard let superview = superview else { return }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            leadingAnchor.constraint(equalTo: superview.leadingAnchor),
+            trailingAnchor.constraint(equalTo: superview.trailingAnchor),
+        ])
+    }
+}
+
+enum Dimensions {
+    static let labelHeight: CGFloat = 25
 }
