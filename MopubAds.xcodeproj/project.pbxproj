@@ -17,6 +17,7 @@
 		5E6B6A2724E6CCBE0034BE07 /* ShowAdsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6B6A2624E6CCBE0034BE07 /* ShowAdsViewController.swift */; };
 		5E893AA624E6DC60004E7313 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E893AA524E6DC60004E7313 /* Models.swift */; };
 		5E893AA824E6DC85004E7313 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E893AA724E6DC85004E7313 /* Views.swift */; };
+		5E893AAA24E70649004E7313 /* NativeAdsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E893AA924E70649004E7313 /* NativeAdsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		5E6B6A2624E6CCBE0034BE07 /* ShowAdsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowAdsViewController.swift; sourceTree = "<group>"; };
 		5E893AA524E6DC60004E7313 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		5E893AA724E6DC85004E7313 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		5E893AA924E70649004E7313 /* NativeAdsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAdsManager.swift; sourceTree = "<group>"; };
 		6BA94BB61276E85648D6DFDC /* Pods-MopubAds.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MopubAds.debug.xcconfig"; path = "Target Support Files/Pods-MopubAds/Pods-MopubAds.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,6 +87,7 @@
 				5E659B7924D94C25004BF636 /* LaunchScreen.storyboard */,
 				5E659B7C24D94C25004BF636 /* Info.plist */,
 				5E6B6A2624E6CCBE0034BE07 /* ShowAdsViewController.swift */,
+				5E893AA924E70649004E7313 /* NativeAdsManager.swift */,
 				5E893AA724E6DC85004E7313 /* Views.swift */,
 				5E893AA524E6DC60004E7313 /* Models.swift */,
 			);
@@ -218,6 +221,7 @@
 				5E659B7324D94C23004BF636 /* ViewController.swift in Sources */,
 				5E659B6F24D94C23004BF636 /* AppDelegate.swift in Sources */,
 				5E893AA824E6DC85004E7313 /* Views.swift in Sources */,
+				5E893AAA24E70649004E7313 /* NativeAdsManager.swift in Sources */,
 				5E6B6A2724E6CCBE0034BE07 /* ShowAdsViewController.swift in Sources */,
 				5E659B7124D94C23004BF636 /* SceneDelegate.swift in Sources */,
 				5E893AA624E6DC60004E7313 /* Models.swift in Sources */,
