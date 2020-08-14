@@ -74,6 +74,10 @@ final class ContentViewCell<ViewType: UIView>: UICollectionViewCell, HasControll
         guard let data = data as? ViewType.ContentType else { return }
         displayContentView.load(content: data)
     }
+
+    static func reuseIdentifier() -> String {
+        return String(describing: self)
+    }
 }
 
 // MARK: -
