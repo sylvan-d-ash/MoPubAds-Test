@@ -11,6 +11,7 @@ import UIKit
 class ShowAdsViewController: UIViewController {
     private var collectionView: UICollectionView!
     private var contents: [ContentProtocol] = []
+    var nativeAdsManager: NativeAdsManager?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,13 +47,25 @@ class ShowAdsViewController: UIViewController {
     }
 
     private func loadData() {
+        if nativeAdsManager == nil {
+            nativeAdsManager = NativeAdsManager()
+            nativeAdsManager?.controller = self
+            nativeAdsManager?.delegate = self
+        }
+
+        let nativeAds = [
+            NativeAdContent(position: "01"),
+            NativeAdContent(position: "02"),
+        ]
+        nativeAdsManager?.loadNativeAds(nativeAds)
+
         contents = [
             NormalContent(title: "First item"),
             DisplayAdContent(type: .banner, position: "01"),
 
             NormalContent(title: "First item"),
             NormalContent(title: "First item"),
-            NativeAdContent(position: "01"),
+            nativeAds[0],
 
             NormalContent(title: "First item"),
             NormalContent(title: "First item"),
@@ -60,7 +73,8 @@ class ShowAdsViewController: UIViewController {
 
             NormalContent(title: "First item"),
             NormalContent(title: "First item"),
-            NativeAdContent(position: "02"),
+            nativeAds[1],
+
             NormalContent(title: "First item"),
         ]
         collectionView.reloadData()
@@ -109,5 +123,16 @@ extension ShowAdsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height: CGFloat = (Dimensions.labelHeight * 2) + (10 * 2) + AdType.rectangle.size.height
         return CGSize(width: UIScreen.main.bounds.width, height: height)
+    }
+}
+
+extension ShowAdsViewController: NativeAdManagerDelegate {
+    func adRequestCompleted(request: NativeAdRequest) {
+        collectionView.performBatchUpdates({
+            if let index = contents.firstIndex(where: { request.ad == ($0 as? NativeAdContent) }) {
+                let indexPath = IndexPath(row: index, section: 0)
+                collectionView.reloadItems(at: [indexPath])
+            }
+        })
     }
 }

@@ -111,6 +111,7 @@ class NativeAdsManager: NSObject, GADNativeCustomTemplateAdLoaderDelegate, GADUn
             print("💚❌ [NativeAdManager] couldn't find request for loader: \(adLoader)")
             return
         }
+        request.ad.gad = nativeAd
         request.ad.status = .loaded
         delegate?.adRequestCompleted(request: request)
     }

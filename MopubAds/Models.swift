@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GoogleMobileAds
 
 protocol ContentProtocol: AnyObject {
     func reuseIdentifier() -> String
@@ -54,6 +55,7 @@ class NativeAdContent: NSObject, ContentProtocol {
     let type: AdType = .native
     let position: String
     var status: Status = .unitiliazed
+    var gad: GADUnifiedNativeAd?
 
     init(position: String) {
         self.position = position

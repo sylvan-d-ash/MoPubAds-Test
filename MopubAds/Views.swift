@@ -180,6 +180,7 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
     private let containerView = UIView()
     private let adTypeLabel = UILabel()
     private let loadStatusLabel = UILabel()
+    private var activityIndicator: UIActivityIndicatorView?
 
     private var nativeAdView: UnifiedNativeAdView!
     private var adLoader: GADAdLoader?
@@ -246,12 +247,49 @@ class NativeAdContentView: UIView, ViewProtocol, HasController, GADNativeCustomT
         adLoader.load(request)
     }
 
+    private func display(ad: NativeAdContent) {
+        switch ad.status {
+        case .loading:
+            loadStatusLabel.text = "Status: Loading.."
+
+            activityIndicator = UIActivityIndicatorView(style: .medium)
+            containerView.addSubview(activityIndicator!)
+            activityIndicator?.startAnimating()
+            activityIndicator?.translatesAutoresizingMaskIntoConstraints = false
+            activityIndicator?.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+            activityIndicator?.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+
+        case .failed:
+            loadStatusLabel.text = "Status: Failed!"
+            activityIndicator?.removeFromSuperview()
+
+        case .loaded:
+            activityIndicator?.removeFromSuperview()
+
+            if let gad = ad.gad {
+                loadStatusLabel.text = "Status: Unified Native Ad Loaded!"
+
+                nativeAdView = UnifiedNativeAdView()
+                containerView.addSubview(nativeAdView)
+                nativeAdView.fillParent()
+                nativeAdView.load(content: gad)
+            } else {
+                loadStatusLabel.text = "Status: Custom Native Ad Loaded!"
+            }
+
+        case .unitiliazed:
+            break
+        }
+    }
+
     // MARK: ViewProtocol
 
     func load(content: NativeAdContent) {
         adTypeLabel.text = content.type.description
-        loadStatusLabel.text = "Status: Loading.."
-        loadNativeAd(content: content)
+        //loadStatusLabel.text = "Status: Loading.."
+        //loadNativeAd(content: content)
+
+        display(ad: content)
     }
 
     // MARK: GADNativeCustomTemplateAdLoaderDelegate
