@@ -34,8 +34,9 @@ class NativeAdsManager: NSObject, GADNativeCustomTemplateAdLoaderDelegate, GADUn
     func loadNativeAds(_ ads: [NativeAdContent]) {
         guard let controller = controller else { return }
 
-        for ad in ads {
+        for ad in ads where ad.status == .unitiliazed {
             load(ad, controller: controller)
+            ad.status = .loading
         }
         self.ads = ads
     }
@@ -63,6 +64,17 @@ class NativeAdsManager: NSObject, GADNativeCustomTemplateAdLoaderDelegate, GADUn
         adLoader.load(request)
     }
 
+    func request(for adLoader: GADAdLoader, shouldRemove: Bool = true) -> NativeAdRequest? {
+        guard let index = adRequests.firstIndex(where: { $0.adLoader == adLoader }) else { return nil }
+        let request = adRequests[index]
+
+        if shouldRemove {
+            adRequests.remove(at: index)
+        }
+
+        return request
+    }
+
     // MARK: GADNativeCustomTemplateAdLoaderDelegate
 
     private enum NativeAdTemplateId: String {
@@ -83,17 +95,35 @@ class NativeAdsManager: NSObject, GADNativeCustomTemplateAdLoaderDelegate, GADUn
 
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeCustomTemplateAd: GADNativeCustomTemplateAd) {
         print("💚 [NativeAdManager] GADNativeCustomTemplateAd 💠")
+        guard let request = request(for: adLoader) else {
+            print("💚❌ [NativeAdManager] couldn't find request for loader: \(adLoader)")
+            return
+        }
+        request.ad.status = .loaded
+        delegate?.adRequestCompleted(request: request)
     }
 
     // MARK: GADUnifiedNativeAdLoaderDelegate
 
     func adLoader(_ adLoader: GADAdLoader, didReceive nativeAd: GADUnifiedNativeAd) {
         print("💚 [NativeAdManager] GADUnifiedNativeAd ⚛️")
+        guard let request = request(for: adLoader) else {
+            print("💚❌ [NativeAdManager] couldn't find request for loader: \(adLoader)")
+            return
+        }
+        request.ad.status = .loaded
+        delegate?.adRequestCompleted(request: request)
     }
 
     // MARK: GADAdLoaderDelegate
 
     func adLoader(_ adLoader: GADAdLoader, didFailToReceiveAdWithError error: GADRequestError) {
         print("💚❌ error: \(error.localizedDescription)")
+        guard let request = request(for: adLoader) else {
+            print("💚❌ [NativeAdManager] couldn't find request for loader: \(adLoader)")
+            return
+        }
+        request.ad.status = .failed
+        delegate?.adRequestCompleted(request: request)
     }
 }

@@ -47,8 +47,13 @@ class DisplayAdContent: NSObject, ContentProtocol {
 // MARK: -
 
 class NativeAdContent: NSObject, ContentProtocol {
+    enum Status {
+        case unitiliazed, loading, loaded, failed
+    }
+
     let type: AdType = .native
     let position: String
+    var status: Status = .unitiliazed
 
     init(position: String) {
         self.position = position
