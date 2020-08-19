@@ -22,6 +22,10 @@ class ShowAdsViewController: UIViewController {
         }
     }
 
+    deinit {
+        print("💚💠 see ya!")
+    }
+
     private func setupSubviews() {
         view.backgroundColor = .white
 
@@ -44,6 +48,20 @@ class ShowAdsViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+
+        let button = UIButton(type: .close)
+        button.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        view.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        button.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+    }
+
+    @objc
+    private func dismissView() {
+        dismiss(animated: true, completion: nil)
     }
 
     private func loadData() {
@@ -53,7 +71,7 @@ class ShowAdsViewController: UIViewController {
             nativeAdsManager?.delegate = self
         }
 
-        let nativeAds = [
+        let nativeAds: [NativeAdContent] = [
             NativeAdContent(position: "01"),
             NativeAdContent(position: "02"),
         ]
